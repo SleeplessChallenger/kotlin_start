@@ -1,0 +1,1580 @@
+First part of the course
+
+1. var is for mutable variables
+=> if we type var age = 32 Kotlin will identify that
+it's an int. But you cannot change then to another type
+
+2. val will allow us to assign variable only once
+
+3. var/val::class is to check the class of the variable
+
+4. val/var name: String or Int and it'll give error if you
+assign not the right one
+
+5. Numerical types
+
+The bigger the type, the bigger value it can store
+
+Types: Byte: 1 byte == 8 bit signed integer
+       Short: 1 short == 16 bit signed integer
+       Int: 1 int == 32-bit signed integer
+       Long: 1 long == 64-bit signed integer
+
+Types decimal:
+        Float: 1 float == 32-bit floating point number
+        In case of floats: 32.00F
+        Double: 1 double == 64-bit floating point number
+        In case of double: 64.0000
+
+5. Everything in Kotlin is an object, hence we can apply methods & properties
+    on them
+
+6. String types
+    String with " "
+    Char with ' ' where Char is a single character representation
+
+7. to write on multiple lines we can either use \n inside strings or
+    """ """
+- by default it uses trimIndent(), but we can also replace it with
+replaceIndent() and specify which kind of indent you'd like
+- trimMargin() by default removes pipes, but we can specify what we want
+to remove: marginPrefix = ">>>"
+- we can concatenate string either by + or by "Hello $some_var"
+- use ${} to put var with attribute inside string
+
+println("Here is ${name1.length} and\n" +
+        "here is $name2")
+}
+
+8. bool: var blank = false
+    blank.not()
+
+9.
+a) fun main() {
+      val age = 1
+      if (age > 10)
+          println("Here")
+          println("Below if")
+  }
+
+  Here second print will be executed as it's not part of if
+
+b) one liner: if (age > 10) println("Here")
+   another one liner: if (age > 10) println("Here") else println("less than")
+
+fun main() {
+    val age = 9
+    val age2 = 10
+
+    if ((age == 5) || (age2 != 10)) {
+        println("Both are true")
+    } else if ((age == 9) && (age2 == 10)) {
+        println("Second is true")
+    } else {
+        println("execute last")
+    }
+}
+
+10. Referential & Structural Equality
+
+    // structural
+    println(name1 != name2)
+    println(name1 == name2)
+    println(name1.equals(name2))
+
+    // referential: compare as objects, i.e. references
+    // in memory.
+    when using primitives: numbers, chars, boolean
+    and using '===' it wil, all have special representation
+    (as primitives) at runtime, but for users they look as
+    ordinary classes
+    => when using primitives: === equals ==
+
+    PS: referential inequality is !==
+
+11. we can't attach null to some variable except we specify:
+    var some_var: String? = "Some name"
+    var age: Int? = 42
+
+    + if we want to allow our created class to be also nullable:
+    var person1: Person? = Person("Donn")
+    person1 = null
+
+12. Safe call: if we specify that var can be null, then when checking a
+    length we need: second_var: String? = null
+                    var length = second_var?.length
+
+    + var length3 = if (second_var != null) second_var.length else 0
+    with such method we can avoid using SAFE CALL as Kotlin will
+    recognize that we've taken care of it
+
+    +     var length4 = second_var?.substring(0,2)?.length
+          // if second_var is null -> 0
+          // if not null -> pull the substring
+          // if that substring is null -> return null
+          // otherwise return length
+    +     val length5 = second_var?.substring(0,5)?.drop(2)?.substring(2,3)?.length
+
+    + if we need to have another variable without ?, but it depends on the one
+        that can be null:
+            var lastName: String? = "Falker"
+            var length: Int = if (lastName != null) lastName.length else 0
+
+        or it can be written using ELVIS operator:
+        val length2: Int = lastName?.length ?: 0
+
+        Elvis: if anything on the left side is null -> return null
+
+13. every function is nothing is specified will return "Unit"
+14. if you specify "return" inside function and don't print it, it won't appear on the screen
+
+15. fun sayHi() {
+        println("Hello")
+
+        fun bye() {
+            println("Bye")
+        }
+    }
+
+We can't call bye() outside sayHi() and we need to call it below the func as otherwise
+it'll give error due to not being initialized
+
+16. single line function: fun sayHi() = println("Hi")
+
+17. As in Python we can use variables of upper function inside inner function
+
+18. We can write "one-liner function" as nested one:
+fun doWork() = if (age > 21) println("less than") else println("More")
+
+19. You need to use positional based at first and then name params.
+Also, you can mix them: fun main(name="Tom", age=43) {}
+or you can put as it's and IDE will put something similar to params
+
+20. default params. In desired function you put: lovesPopcorn: Boolean = true.
+But of course you can put another variables. Like in Python
+
+21. to allow one param takes many values: vararg. I.e. vararg authors: String
+And to get from array: authors.forEach{println(it)}
++ vararg allows us not to provide any value at all
+
+22. function overloading: we can create fun() with same names, but diff params
+one after another. But we can use default params to clean it up
+
+23. In class we can create fun() which in turn will update the class
+properties
+
+24. there are 2 ways to create classes: with or without constructor
+class User {
+    var first: String = ""
+}
+
+class User constructor {
+    var first: String
+}
+
+Also we can use without constructor:
+
+class User(var first_name: String) {
+
+}
+
+Difference? => without is a Primary Constructor and with is a secondary
+
+class User (
+    var first_name:String = "",
+    var last_name:String = "Smith",
+    var isPlatinum: Boolean) {
+
+    constructor(
+        first_name: String,
+        last_name: String
+        ): this(first_name, last_name, isPlatinum = false) {
+
+        }
+
+25. if we create constructors:
+class User (
+    var first_name:String = "",
+    var last_name:String = "Smith",
+    var isPlatinum: Boolean) {
+
+    constructor(
+        first_name: String,
+        last_name: String
+        ): this(first_name, last_name, isPlatinum = false) {
+        println("second constructor")
+        }
+
+    constructor(
+        first_name: String
+    ) : this(
+        first_name,
+        "Unknown") {
+            println("last constructor")
+        }
+
+ here we can specify only "first_name" => we'll go into the third
+ constructor where via "this" we'll go up to second constructor,
+ where we pick "last_name" as  "Unkown" and then by "this" go into
+ primary constructor where "isPlatinum" is found. After that we go into
+ third constructor again
+
+ But if we take:
+ constructor(
+    first_name: String
+    ) :this(first_name,  "Unkown", true) {
+    println("something")
+    }
+
+    => it won't go into second as it does find everything inside
+    third  constructor
+
++
+
+class User(
+    var first_name: String,
+    var last_name: String,
+    var isPlatinum: Boolean) {
+
+
+    constructor(
+        first_name: String,
+        last_name: String,
+    ) :this(first_name, last_name, isPlatinum = true) {
+        println("Second")
+    }
+
+    constructor(
+        first_name: String
+    ) :this(first_name, "Unknown") {
+        println("third")
+    }
+
+if we remove second AND don't add default param to User or third constr.
+=> error as code won't know what to put to isPlatinum
+
+!!!! constructor doesn't need to call everything up to Primary.
+If it has all the params in :this => directly to Primary, but
+if not => chain starting from constructor that defines missing in
+current constructor property
+
+26.
+class User(
+    var first_name: String,
+    var last_name: String) {
+
+    constructor(first_name: String) : this(first_name, "Falker") {
+        println("second call")
+    }
+
+    init {
+        println("Hello!")
+    }
+
+    init {
+        println("Hello2!")
+    }
+
+Here, if we create variable with the second constructor,
+we'll go to the primary constructor, then call init blocks
+and then come back to our constructor
+
+27. if you want to return something on variable:
+
+var fullName: String = "$first_name $last_name"
+    get() = "Name: $field"
+
+=> it's known as a backing field
+
+28. Place some getters and setters (only for classes)
+
+var fullName: String = "$first_name $last_name"
+        get() = "Name: $field"
+        set(value) {
+            if (value.startsWith("Joh")) {
+                field = "John Doe"
+            } else {
+                field = value
+            }
+        }
+
+29. companion function is a function that will
+be tied to the class, directly to its instances
+and we can treat it as a factory for creation of our objects
+
+30. companion object {
+            val users = mutableListOf<User>()
+
+            .... }
+
+   users is a property which is on User class => it keeps values
+   after applying the companion function
+
+
+31.
+    User.users.forEach {println(it)}
+
+    val len = User.users.size - 1
+    for(j in 0..len) {
+        println(User.users[j])
+    }
+
+32. in Singelton we want only 1 instance to be created at any time
+So, we cannot have multiple instances of one object
+
+33. constant is in upper case with underscore: MAX_AGE
+Also, it cannot be assigned to var, only val
+Ways to define constant in Kotlin:
+
+    1. private val MAX_AGE = 43 inside class
+    2. companion object {
+               const val MAX_AGE = 18
+           }
+    3. object Constants {
+           const val MAX_AGE = 18
+           const val MIN_AGE = 5
+       }
+    => here we use Singelton, hence it resembles
+    point 2
+
+    4.   companion object {
+               private const val MAX_AGE = 18
+           }
+
+    5. above in the file: const val MIN_AGE = 22
+
+    6. lateinit: initialize property before you use it
+    user = User("A", "B")
+    user.favouriteCity = "Tokyo"
+
+34. there are nested classes, where we can call
+through upper class methods if inner class
+
+class Vehicle {
+    var brand: String = "unknown"
+
+    fun info() = println(brand)
+
+    class SteeringWheel {
+        var name = "The Sterring wheel"
+        fun info() = println(name)
+    }
+
+    class Transmission {
+        var type = "Automatic"
+        fun shift() = println("The vehicle has shifted")
+
+    }
+}
+
+BUT: nested class can't access outer class variables.
+For this purpose use "inner" keyword and use instance of
+upper class
+
+val vehicle: Vehicle = Vehicle()
+val sw = vehicle.SteeringWheel()
+
+ALSO: if just nested, without inner, we can't use instance
+to access nested class
+
+35. enum classes are for creating iterative objects:
+https://www.geeksforgeeks.org/enum-classes-in-kotlin/
+enum class AccountType {
+    BRONZE,
+    SILVER,
+    GOLD,
+    PLATINUM
+}
+
++ we can create special values
+enum class AccountType(val discount_perCent: Int) {
+    BRONZE(10),
+    SILVER(15),
+    GOLD(20),
+    PLATINUM(25)
+}
+
+fun main() {
+    println(AccountType.GOLD.discount_perCent)
+}
+
++ we can implement another variables:
+enum class AccountType(
+    val discount_perCent: Int,
+    val numberOfDecriptions: Int) {
+
+    BRONZE(10, 1),
+    SILVER(15, 5),
+    GOLD(20, 10),
+    PLATINUM(25, 15)
+}
+
+
+fun main() {
+    val value = AccountType.valueOf("silver".uppercase(Locale.getDefault()))
+
+    println(value)
+    println(value.discount_perCent)
+    println(value.numberOfDecriptions)
+}
+
++ we can create functions by overriding abstract fun:
+enum class AccountType() {
+    BRONZE {
+           override fun calcInt() = 5
+           },
+    SILVER {
+           override fun calcInt(): Int = 10
+           },
+    GOLD {
+         override fun calcInt(): Int = 15
+         },
+    PLATINUM {
+        override fun calcInt(): Int = 20
+    };
+
+    abstract fun calcInt(): Int
+}
+
+
+fun main() {
+    val fromApi = "gOlD"
+    val accountType = AccountType.valueOf(fromApi.uppercase(Locale.getDefault()))
+
+    println(accountType.calcInt())
+}
+
+36. iteration over enum:
+    for(t in AccountType.values()) {
+        println(t)
+    }
+
+    AccountType.values().forEach {println(it)}
+
+37. We can use companion object as staticmethod inside our enum class (and not only in it)
+
+fun main() {
+    val accountType = AccountType.getAccount("golD")
+    println(accountType)
+}
+
+
+enum class AccountType() {
+    BRONZE,
+    SILVER,
+    GOLD,
+    PLATINUM;
+
+    companion object {
+        fun getAccount(name: String) = valueOf(name.uppercase(Locale.getDefault()))
+    }
+}
+
+
+38. switch statements:
+
+v1
+  when {
+        name == "GOLD" && name is String -> {
+            println("GOLD stuff")
+        }
+        name == "GOD" -> println("Some stuff")
+        else -> println("This is not Don")
+    }
+
+v2
+    when(name) {
+        "GOLD" -> {
+            println("GOLD stuff")
+        }
+        "GOD" -> {
+            println("Not stuff")
+        }
+        else -> {
+            println("This is not GOLD")
+        }
+    }
+
+Difference? First one can be used with multiple checks
+and second one cannot
+
++ we can attach result of when to a variable:
+
+   val account_type = AccountType.PLATINUM
+
+    val some = when (account_type) {
+        AccountType.PLATINUM -> {
+            "PLATINUM member access"
+        }
+
+        AccountType.GOLD -> {
+            "GOLD member access"
+        }
+
+        AccountType.SILVER -> {
+            "SILVER member access"
+        }
+
+        AccountType.BRONZE -> {
+            "BRONZE member access"
+        }
+
+        else -> "Unknown type"
+    }
+
++ exhaustive & non-exhaustive: former is with else and latter is without
+
+39. 2 same instances of the class are different in memory => not the same
+But if we use "dataclass" and again 2 instances => same
+
+Purpose? => to create class that will just keep data
+
+Kotlin compiler creates: equals / hashcode / toString and a couple more
+println() triggers toString method in dataclass hence if VALUES are the
+same => true, but if ordinary class: it triggers equals which is
+different as we speak about reference in memory
+
+data class Person(val first_name: String, val last_name: String, val age: Int) {
+    fun fullName(): String {
+        return "$first_name & $last_name"
+    }
+
+    fun nameLength(): Int = fullName().length
+}
+
+
+class Person(val first_name: String, val last_name: String) {
+    override fun toString(): String {
+        return "$first_name & $last_name"
+    }
+}
+
++ we can create data class with default params
+
+
+40. iteration & addition to list:
+
+    val list = mutableListOf<Person>()
+    list.addAll(listOf(p1,p2,p3))
+
+    for (i in list) {
+        println("${i.first_name} - ${i.last_name} user")
+    }
+
+    list.forEach {println("${it.last_name}")}
+
+41. Component1-N
+
+fun main() {
+    val p1 = Person("Naruto", "Uzumaki", 43)
+    val p2 = Person(age=54, lastName = "Uchiha", firstName = "Sasuke")
+    val fn: String = p1.component1()
+    val ln: String = p1.component2()
+    val ag: Int = p1.component3()
+
+    println("$fn, $ln, $ag")
+    println("${p2.component1()}, ${p2.component2()}, ${p2.component3()}")
+
+}
+
+
+data class Person(
+    val firstName: String,
+    val lastName: String,
+    val age: Int
+)
+
+42. There is a destructuring in DataClasses which is based on Component1-N. So, it'll place components
+in order of their appearance
+
+val p1 = Person("Naruto", "Uzumaki", 43)
+val (fn, ln, ag) = p1
+
+43. copy of dataclass:
+
+val sibling = p1.copy()
+
+it'll create copy of the instance. BUT!!! when speaking about, i.e. lists => shallow copy
+
++ we can put params inside the .copy(): val sibling = p1.copy(age = 25)
++ we can copy dataclasses with another classes inside & tweak them:
+
+fun main() {
+    val p1 = Person("Naruto", "Uzumaki", 43)
+
+    val sibling = p1.copy(age = 25)
+
+    // 1
+    val order = Order(customer = sibling, amount = 42)
+    println(order)
+
+    // 2
+    val newOrder = order.copy(amount = 90)
+    println(newOrder)
+
+    // 3
+    val newOrder2 = order.copy(customer = p1)
+    println(newOrder2)
+}
+
+
+data class Order(
+    val amount: Int,
+    val customer: Person
+)
+
+data class Person(
+    val firstName: String,
+    val lastName: String,
+    val age: Int
+)
+
+44. built-in Kotlin data classes
+
+    // 1: if you have 2 values
+    val pair = Pair(
+        "foo",
+        42
+    )
+    println(pair.first)
+    println(pair.second)
+
+    // 2: if you have 3 values
+    val triple = Triple("A", 43, true)
+    println(triple.first)
+    println(triple.second)
+    println(triple.third)
+
+45. protected will make it visible only to the curr class and inherited ones. If you want
+to make a variable protected from being changed by outer actions, but at the same time being
+able to be changed inside children classes => a way to go
+
+
++ we need to add "open" if we want to extend a class, i.e. to become possible for inheritance
+
++ children can have access to parent class methods
+
++ we can't access protected variable directly, only via functions. Also, we can see them
+from created by us method, not directly as well
+
+// in Chef we change the favFood as Chef is a children class
+
+open class Person(var name: String, var age: Int) {
+    protected var favFood: String = "unknown"
+
+    fun info() {
+        println("This person's name is $name and $age")
+    }
+
+    fun printMyFood() {
+        println(favFood)
+    }
+}
+
+
+class Chef(name: String, age: Int, food: String): Person(name, age) {
+    init {
+        favFood = food
+    }
+
+    fun newFavFood(food: String) {
+        favFood = food
+    }
+}
+
+// initialization
+    p.printMyFood()
+
+    c.printMyFood()
+    c.newFavFood("ice cream")
+    c.printMyFood()
+
+
+46. Also, we can make a method protected. Why? -> to make it usable only in the very class
+or children classes. EVEN INSTANCES CANNOT CALL IT, only within the classes
+
+open class Animal(var type: String, var size: Int) {
+    fun showBeast() {
+        println("This is $type and of $size")
+    }
+}
+
+
+open class Beast(type: String, size: Int, var b: Boolean) : Animal(type, size) {
+
+    protected fun printTheBeast() {
+        println(b)
+    }
+
+    fun changeBeast(a: Boolean) {
+        b = a
+        printTheBeast()
+    }
+
+}
+
+// here b2 is the same as b, but we cannot use the same variable inside child class
+class Mammal(type: String, size: Int, var b2: Boolean): Beast(type, size, b2) {
+    init {
+        printTheBeast()
+    }
+}
+
+47. var/val inside class is a property (like self. in Python)
+
+48. What if we want to have class that is only visible inside module,
+but not exposed to outer? (i.e.outer API)
+
+=> use internal. But in this case we can't use lateinit or something
+that as it makes the variable visible and external. And if we try to apply
+protected/private to lateinit (which var is internal)=> error.
+
+!!!!BUT!!!! we can make "private lateinit array" and create  method
+that will add to it. Why? => variable hidden behind the API and is secured
+against DIRECT modifications, but possible to be changed via methods
+
++ we cannot return internal variable in function as we actually
+expose  it
+
+!!!Resolve error
+
+49. abstract class
+
+49.1 we can provide default params to child class in the parent class:
+
+class Lambo():
+        Vehicle("red",  4)
+
+49.2 you can create abstract methods. Also, you can create abstract class
+of abstract method. And we can "override" abstract method of parent class
+inside abstract child class
+
+
+50. When creating interfaces, we need to realize methods in child classes, otherwise
+we get the compilation error
+
+51. How to create interface?
+
+// file with interface
+
+interface FileSystem {
+    fun readDir(): List<String>
+    fun readFile() : String
+}
+
+class Fat32FileSystem: FileSystem {
+    override fun readDir(): List<String> {
+        return emptyList()
+    }
+
+    override fun readFile(): String {
+        return "here"
+    }
+}
+
+class ExtFileSystem: FileSystem {
+    override fun readFile(): String {
+        return ""
+    }
+
+    override fun readDir(): List<String> {
+        return emptyList()
+    }
+}
+
+
+class MemoryFileSystem(
+    val files: List<String>,
+    val fileContents: String): FileSystem {
+
+    override fun readDir(): List<String> {
+        return files
+    }
+
+    override fun readFile(): String {
+        return fileContents
+    }
+
+}
+
+//
+
+fun getFileSystem(): FileSystem {
+    return MemoryFileSystem(listOf("path/to/file", "another/path"), "file-content")
+}
+
+fun main() {
+    val fileSystem: FileSystem = getFileSystem()
+    fileSystem.readDir()
+}
+
+
+Second part of the course
+
+Data Structures
+
+51. arrayOf is to create array of something. forEach {println(it)} where
+"it" is an iterator and if we want to replace "it" with something else:
+..forEach {value -> println(value)}
+
+51.1 we can specify intArrayOf(), charArrayOf() etc
+51.2 arr.plus()
+51.3 arr.get(index) or arr[index]
+51.4 arr.set(index, value) or arr[index] = value
+
+52. listOf is an immutable list. And there is mutableListOf()
+
+52.1 remove var     val user = User("some", "name")
+                    val items = mutableListOf(
+                        user, User("some", "User")
+                    )
+
+                    items.remove(user)
+
+52.2 we can removeAt(index) or remove(value)
+52.3 set(index, value) or arr[index] = value
+52.4 list[index] == list.get(index)
+
+
+53. You can filter both "list" and "array"
+
+names.filter { it != "don"}
+some.filter { it.lowercase(Locale.getDefault()).contains("b")}
+listAges.filter { it > 100 }
+
+53.1 also we can use: list.filter(::method) to apply method on the list
+
+54. Speaking about ways to find/filter:
+a) we can use find(): but it can give "null" if nothing matches
+b) first() can also be used. It'll either find the matching or raise an Error
+c) firstOrNull() can gives either match or null
+
+var res2: String = listObjects.first { it.lowercase(Locale.getDefault()).contains("bob") }
+var res3: String = listObjects.last { it.lowercase(Locale.getDefault()).contains("jane")
+
++ indexOf, + filterNot will include everything that is not: names.filterNot {it.contains("v")}
+
+55. how to unite and filter 2 lists into one? some_list.filterTo(second_list, { it.contains() })
+=> we'll get second_list. If use filterNotTo => don't move if in "contains()"
+
+!!BUT!!: the list inside "filterTo/filterNotTo" must be mutable, otherwise error will be raised
+
+56. How to flatten lists and arrays?
+
+    val fruits: List<String> = listOf("apples", "oranges")
+    val vegetables: List<String> = listOf("tomatos", "carrot")
+    val res1: List<List<String>> = listOf(fruits, vegetables)
+
+    println(res1)
+    println(res1.flatten())
+
+    val tech: Array<String> = arrayOf("Android", "IOS")
+    val colour: Array<String> = arrayOf("Red", "Blue")
+    val res2: Array<Array<String>> = arrayOf(tech, colour)
+
+    println(res2)
+    println(res2.flatten())
+
+57. you can make various actions with lists even if they're IMMUTABLE:
+a) concat them together: val res1 = fruits.plus(vegetables).plus(cherries)
+b) remove one part from the whole list: res1.minus(vegetables)
+c) remove particular ele from the whole list: res1.minus("Apple")
+
+58. map operator:
+a) i.e. to get [APP, ORA, PEA, TAN] in python: list(map(lambda x: x[0:3].upper(), arr)). In Kotlin:
+fruits.map { it.substring(0,3).uppercase(Locale.getDefault()) }
+
+b) we can apply .map() on top of .map():
+    fruits.map { it.substring(0,3).uppercase(Locale.getDefault()) }.sumOf { it.length }
+
+c) fruits.map { it.substring(0,3).uppercase(Locale.getDefault()) }.filter { it.contains("R")}
+
+
+59. flatMap vs flat: former creates single list out of nested lists and latter keeps nested
+structure inside new list
+
+60. setOf() is a set in Kotlin (like Python)
+
+60.1 By default set() is immutable. There is mutableSetOf() if you need to add() to it
+
+60.2 2 instances of "class" with similar values will be different. For this purposes use "data class"
+
+!!!By default, everything in Kotlin is immutable. So, we need to tell Kotlin that we want it to be
+mutable
+
+
+61. for loops:
+
+a)     val values = listOf(1, "New", 3, 4, "Donn", 6)
+       for (i in values) {
+           println(i)
+       }
+
+b)      for (i in 0 until 10) {
+            println(i)
+        }
+
+c)     with SEPARATE limits and STEP
+
+       val upperLimit = 10
+
+       for (i in 0 until upperLimit step 3) {
+           println(i)
+       }
+
+d)      val lim = 100
+
+        for (i in 600 downTo lim step 100) {
+            println(i)
+        }
+
+62. while loop
+
+    var x = 0
+
+    while (x < 10) {
+        println(x)
+        x ++
+    }
+
+63. When we're working with a collection array: use forEach for simplicity
+
+a)    val people: List<Person> = listOf(
+        Person("Donn"),
+        Person("Jake"),
+        Person("Janet"),
+        Person("Kavita")
+    )
+
+    people.forEach { println(it) }
+
+b) people.map { println(it.name.length) }
+
+c) people.map { it.name }.forEach { it.uppercase()}
+
+
+64. If we want to combine 2 lists and exclude duplications:
+
+    val uniqueValues = people1.union(people2)
+    println(uniqueValues)
+
+    val uniqueValues = people1.union(people2).union()
+
+=> result is a set()
+
+65. To iterate with index: people1.forEachIndexed { index, person -> println("$index, $person") }
+
+66. ranges:     val i = 1
+                if (i in 0..5) {
+                    println("Yes")
+                } else {
+                    println("No")
+                }
+
+67. hashtable in Kotlin can be mutable or immutable
+
+immutable:      val states: Map<String, String> = mapOf(
+                    "TK" to "Tokyo",
+                    "OS" to "Osaka",
+                    "HK" to "Hakone"
+                )
+
+67.1 to retrieve values: get(), getOrDefault(), getOrElse(),  [key]
+67.2 containsKey() to get the true/false
+67.3 containsValue() to get the true/false
+67.4 hash_table.entries returns set of: TK=Tokyo ...
+67.5 hash_table.key; hash_table.values to get them in set()
+
+mutable:   var cars: Map<String, Int> = mutableMapOf(
+                 "A" to 4,
+                 "B" to 9,
+                　"C" to 32
+                )
+
+67.1 to remove key-value pair: ht.remove(key)
+67.2 As ht will replace value of existing key on new value assignment
+-> we can use .putIfAbsent() to prevent assignment if key already exists
+
+val res: Int? = cars.putIfAbsent("A", 4333) will return value that is
+currently assigned
+
+67.3 If we want to remove key if the value matches the particular thing:
+    ht.remove(key, desired value)
+
+67.4 getOrPut() if we want to get value if key exists or put if there
+is no such key
+
+67.5 ht.clear() will remove all the data from ht
+
+68. if hash_table.any() {}. if hash_table.none()
+
+69. if you want to filter hash_table:
+
+var res: Map<String, String> = items.filter { it.key == "TK"}
+var res: Map<String, String> = items.filter { it.value.contains("K") }
+
++ filterKeys/.filterValues will allow us to use "it" without ".key"/".value
+
++     var res = items.filterKeys { it.contains("K") }
+          .map { it.value.substring(0,3) } -> returns values
+
++     var res = items.filterKeys { it.contains("K") }
+          .mapValues { it.value.substring(0,3) } -> returns k-v pairs
+
+70.
+    var result = items.mapNotNull(::findValue)
+    println(result)
+
+ }
+
+
+fun findValue(entry: Map.Entry<String, String>): Map.Entry<String, String>? {
+    if (entry.key.startsWith("O")) {
+        return null
+    } else {
+        return entry
+    }
+}
+
+=> here we can get "null" as result. But if we don't want null?
+=> use .mapNotNull. And this way we can get only matched values without "null"
+
+71. How to create large sequences in Kotlin?
+
+    val list: List<Int> = generateSequence(1) { it + 1 }
+        .take(50_000_000)
+        .toList()
+
+    val result: Double = list
+        .filter { it % 3 == 0}
+        .average()
+
+72. Measure time
+
+1. create measure() which will take code inside
+
+
+fun main() {
+
+    measure {
+        val list: List<Int> = generateSequence(1) { it + 1 }
+            .take(50_000_000)
+            .toList()
+
+        val result: Double = list
+            .filter { it % 3 == 0}
+            .average()
+
+        println(result)
+    }
+ }
+
+fun measure(block: () -> Unit) {
+
+    val nanotime: Long = measureNanoTime(block)
+    val millis = TimeUnit.NANOSECONDS.toMillis(nanotime)
+    println("$millis ms")
+
+}
+
+
+73. sequenceOf is more performant compared to listOf
+
+But if process the values in chunks:
+
+    // Kotlin takes the whole list and iterates
+    // over it -> creates new list. For the next
+    // iteration it creates again new list
+    listOf("A", "B", "C")
+        .filter {
+            println("filter: $it")
+            true
+        }
+        .forEach {
+            println("forEach: $it")
+ }
+
+    println("------")
+
+    // sequence evaluates lazily
+    sequenceOf("X", "Y", "Z")
+        .filter {
+            println("filter: $it")
+            true
+        }
+        .forEach {
+            println("forEach: $it")
+        }
+
+74. We can take code from above and change from List<Int> to Sequence<Int>
+
+Instead of "filter" we can use "asSequence()" and it'll create sequence
+
+val list : List<Int> = getListOfCustomers()
+
+    measure {
+
+        val result: Double = list.asSequence()
+            .filter{ it % 3 == 0 }
+            .average()
+
+        println(result)
+    }
+
+75. Ternary operator doesn't exist in Kotlin. Instead use:
+
+    val name: String? = null
+    val length: Int = if(name != null) name.length else ( 0 )
+
+76. Dealing with null values
+
+a) !! allows you to push Kotlin to think that there'll be no null value,
+trust me. But if it happen to be null -> Error
+
+    var name: String? = "Some"
+    val length: Int = name!!.length
+
+ Why not use safe call "?" ? Maybe, we don't want to work with null values
+ and throw error if null -> use !!
+
+    val person: Person? = Person("his")
+    println(person!!.name)
+
+class Person(val name: String)
+
+b) requireNotNull(variable, {" "}). We can provide additional value inside brackets
++ it can be used on objects as well:     val person: Person? = null
+                                         val result = requireNotNull(person, {"Make not NULL"}).name
+
+77. Ways to check if value is null or not:
+
+a) if(variable?.name == "Don") {
+    println("..")
+}
+
+b) if(variable!!.name == "Don") {
+    println("..")
+}
+
+c) if (requireNotNull(person).name == "Donn") {
+      println("Yes, Donn")
+}
+
+d) if (checkNotNUll(person).name == "Donn") {
+    println("Yes, Donn")
+}
+
+
+78. list.filterNotNull() to filter list if we want to have no null
+
+    val names: List<String?> = listOf("Donn", "John", "Davita", null, "Mihta")
+    val peopleNames: List<String> = names.filterNotNull()
+
+79. If we place "Any" at the var and do "typechecking"
+    => we can check by "is":
+
+        val age: Any = 32
+
+        if (age is String) {
+            println("Is any")
+        } else {
+            println("Not any")
+        }
+
+   + we can use object: val obj: Any = Person("Bob")
+    obj.javaClass.name
+
+   + fun main() {
+
+         val obj: Any = getStuff("1")
+
+         if (obj is Int) {
+             println("Is any")
+         } else {
+             println("Not any")
+             println(obj.javaClass.name)
+         }
+
+     }
+
+     fun getStuff(value: String): Any {
+         return when (value) {
+             "1" -> 1
+             "2" -> "Hello"
+             "3" -> true
+             else -> false
+         }
+     }
+
+80. By casting we mean that return value is "Any" and it is:
+inherently is String => cast as String to make it a real String
+inherently is Int =? cast as Int to make it a real Int
+
+    val obj: Any = getStuff("3")
+    val age: Boolean = obj as Boolean
+
+  +      val obj: Any = getStuff("5")
+         val age: Person = obj as Person
+         age.name
+
+!!!BUT!!! If we don't cast as Person -> impossible to use properties
+
+81. Safe casts: if we want to bypass errors
+
+    // first variant
+    val obj: Any = getStuff("3243")
+    val casted: Int = if (obj is Int) obj as Int else 0
+
+    // second variant
+    val obj: Any = getStuff("3243")
+    val casted: Int? = obj as? Int
+
+82. There are Generic Types in Kotlin and we can make them by ourselves.
+
+For example, listOfStrings(), listOfInts(), map: Map<String,Int> are all generics
+
+Example of a generic:
+
+fun main() {
+    val listOfStrings: List<String> = listOf("Donn", "John", "Mary")
+    val listOfInts: List<Int> = listOf(1,2,3,4)
+
+    val result: EvenList<String> = EvenList<String>(listOfStrings)
+    println(result.someItems())
+
+    val result2 = EvenList<Int>(listOfInts)
+    println(result2.someItems())
+
+    val people = listOf(
+        Person("A"),
+        Person("B"),
+        Person("C")
+    )
+
+    println(EvenList(people).someItems())
+}
+
+class EvenList<SOME_TYPE>(val list: List<SOME_TYPE>) {
+    fun someItems(): List<SOME_TYPE> {
+        return list.filterIndexed { index, value
+            -> index % 2 == 0}
+    }
+}
+
+data class Person(val name: String)
+
+83. How to throw an Exception in Kotlin?
+
+    val p: Person = Person("Tom", 17)
+    if (p.age < 18) {
+        throw IllegalArgumentException("User isn't old enough")
+    }
+
+84. How to create you own Exceptions?
+
+fun main() {
+    val p: Person = Person("Tom", 17)
+    if (p.age < 18) {
+        throw SomeDopeException(p.age, "User isn't old enough")
+    }
+}
+
+data class Person(val name: String, val age: Int)
+
+
+class SomeDopeException(
+    val age: Int,
+    message: String):
+    java.lang.IllegalArgumentException("Invalid age: $age, $message!!")
+
+85. try - catch block
+
+- code after first error won't proceed within "try" block
+    and will go straight to the "catch" part
+
+- if we don't have "try - catch" block, then if our program
+    makes "throw ..." => it blows up. "try - catch" block
+    helps to mitigate such cases and, maybe, fine-tune
+    bypasses within the block
+
+    try {
+        checkAge(p)
+        println("Done")
+        println("Done1")
+        println("Done2")
+        println("Done3")
+    } catch (ex: Exception) {
+        println("Caught the exception")
+    }
+
+private fun checkAge(p: Person) {
+    if (p.age < 20) {
+        throw Exception("Boom")
+    }
+}
+
++ why program can still blow up? -> if we catch "RuntimeException",
+    but inside some function make a "throw Exception" -> in the "catch"
+    block we have a much more granular stuff (Exception > RuntimeException)
+
+   If we catch BROADER Exception and throw more granular -> program
+   will catch it as here the rule above also works.
+
++ what if we want to catch multiple exceptions? => Climb the hierarchy
+
+catch (ex: Exception) {
+        when (ex) {
+            is java.lang.StackOverflowError -> println("First")
+            is InvalidNameOrAge -> println("Invalid age")
+            else -> println("Further errors")
+        }
+
+    }
+
++ we can re-throw exceptions if we don't know how to deal with it.
+I.e. we mentioned a couple of known issues above and further we want
+to show us the trace:
+
+catch (ex: Exception) {
+        when (ex) {
+            is java.lang.StackOverflowError -> println("First")
+            is InternalError -> println("Invalid age")
+            else -> throw ex
+        }
+}
+
+86. try/catch/finally
+
+"finally" will be executed anyways, but after it the program
+will halt. I.e. if we have some logic after it -> it won't execute
+
+Purpose? -> if we have some file open before the "try/catch/finally"
+and we want to close it to free our memory -> use "finally" (not to
+have memory leaks).
+
+FOR EXAMPLE: we haven't caught the desired
+exception and as a result we want to throw it to halt out program. But,
+we want to do some clean-up
+
+87. If we use some variable across our file, and we want to force some
+type => type alias. It helps to reduce long generic types
+
+typealias AuthToken = String
+
+fun main() {
+    val user = User2("Donn", "32342LKOcso909")
+
+    Order("myToken")
+}
+
+data class User2(val username: String, val authToken: AuthToken)
+
+data class Account(val authToken: AuthToken)
+
+data class Order(val authToken: AuthToken)
+
+88. In Kotlin we can add **functions** to classes in existing libraries
+
+// **type** to extend; **method name** that we want to create
+fun String.initials(): String {
+    // string is splitted on an empty place
+    val values: List<String> = this.split(' ')
+    val firstInitial: String = values[0].substring(0,1)
+    val lastInitial: String = values[1].substring(0,1)
+    return "$firstInitial $lastInitial"
+}
+
+// **this** regards which type we're extending
+fun Int.isAdult(): Boolean = this >= 18
+
++ we can add, i.e.,  isntance.name to that String
+
++ for example we have some library and we can't modify its methods etc.
+=> answer is extension:
+    fun Person.fullName() = "${this.firstName} & ${this.lastName}"
+
+89. "by lazy" will evaluate operation ones and remember it. Because
+we can have a very expensive operation and such a technique helps
+us to save time/resources
+
+    val name: String by lazy {
+        println("Computed")
+        sleep(3000)
+        "Donn"
+    }
+
+    println(name)
+    println(name)
+
+ => here we'll have println("Computed") only ones due to mentioned
+ above reasons
+
+ 90. lazy. It allows us to not compute the value at first
+    and only when ".value" is called => do it and save
+    the result as in "by lazy" so as not to spend time/resources
+    afterwards
+
+ Properties: a) isInitialized() b) value
+
+ fun main() {
+
+     val result: Lazy<Int> = lazy { someExpensiveTask() }
+
+     println(result)
+     println("Is initialized: ${result.isInitialized()}")
+     println(result.value)
+
+     println(result.value)
+
+     println(result.value)
+
+ }
+
+ fun someExpensiveTask(): Int {
+     println("computed")
+     sleep(1000)
+     return Random(System.currentTimeMillis()).nextInt()
+ }
+
+=> by checking that "result" has the same value in all calls:
+    we can attest that Kotlin takes them from cache
+
+91. typeinference
+ => Kotlin can guess what is the type of variable
+
+ !!BUT!! lateinit requires some type for compiler to run:
+ lateinit var food: String
+
+ => val reversed = nameReverse((name)): here Kotlin will look
+ at what type does this function return, then inference the value
+ for this variable
+
+92. lambda functions:
+the overall structure is     // val lambdaName: (Input) -> ReturnType =
+                             // { arguments:InputType -> body }
+
+And we can provide from 1 to n params:
+
+    // first ver
+    val firstLam: (String) -> Boolean =
+        { name:String -> name.length > 4}
+
+    // second ver
+    val greeter: (String, Int) -> Boolean =
+        { name:String, age:Int -> name.length > 5 && age > 40}
+
+    // third ver
+    val superGreeter: (String, String) -> String =
+        {firstName:String, lastName:String ->
+            val modified_name:String = firstName.uppercase(Locale.getDefault())
+            val modified_last:String = lastName.lowercase(Locale.getDefault())
+            "Hello, $modified_name, $modified_last"
+        }
+
+    // fourth ver: place Unit and use println() if you want to have
+    // result printed. **Unit** means void in Java, i.e. no return
+    val superGreeter: (String, String) -> Unit =
+        {firstName:String, lastName:String ->
+            val modified_name:String = firstName.uppercase(Locale.getDefault())
+            val modified_last:String = lastName.lowercase(Locale.getDefault())
+
+            println("Hello, $modified_name, $modified_last")
+        }
+
+93. First example doesn't return anything; Second example has
+return type of String. In first we don't provide anything,
+in second we do provide "player -> String ..."
+
+
+So as not to overload our function with a lot of params, we can have
+**lambda as a function param**
+
+
+// FIRST
+fun main() {
+
+    // when we enter "lineLogger", at first
+    // we do all the stuff and WHEN **block()**
+    // is executed -> the params provided are
+    // triggered
+    lineLogger {
+        println("Message1")
+        println("Message2")
+        println("Message3")
+    }
+}
+
+// block is a lambda
+// Unit means we don't have any return
+fun lineLogger(block: () -> Unit) {
+
+    repeat(5) { println("-------")}
+    block()
+    repeat(5) { println("-------")}
+
+}
+
+
++ To provide params, we do this in (), but actual
+    lambda is in {}
+
+// SECOND
+lineLogger("Tom") {
+
+    println("Message1")
+    println("Message2")
+    println("Message3")
+}
+
++ we can also do this way:
+fun main() {
+    derbyAnnouncer { player: String ->
+        "$player is a great asset!"
+    }
+}
+
+fun derbyAnnouncer(block: (String) -> String)  {
+    var players: List<String> = listOf(
+        "A",
+        "B",
+        "C",
+        "D"
+    )
+
+    val randomWord: String = players.random()
+    println("The next random player: $randomWord")
+    val log: String = block(randomWord)
+    println(log)
+}
+
+So, in {} we provide our "lambda" which will be triggered by "block()"
+And we can attach result from "block()" to some variable
+
++ What if we don't need some variable? -> Use "_" as a default param
+
+fun main() {
+    loremIpsum(5) { _: Int, word: String ->
+        print(word)
+        print(" ")
+    }
+}
+
+fun loremIpsum(times: Int, block: (Int, String) -> Unit) {
+    repeat(times) { index ->
+        val word: String = latinWords.random()
+        block(index, word)
+    }
+}
+
+94. If we have only one param in "lambda" or some other func
+like "map, filter". Instead of first variant, we can have
+the second, more concise one:
+
+    repeat(3) { someVar: Int ->
+        println("This is $someVar")
+    }
+
+    repeat(2) { println("This is iteration $it")}
+
+95. "val" doesn't have set(), only get() as it's not a
+    changeable field
